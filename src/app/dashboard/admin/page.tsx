@@ -72,6 +72,32 @@ export default function AdminDashboard() {
     router.push("/login");
   };
 
+  const getLocationStatus = (capacity: number, filled: number) => {
+    const percentage = capacity > 0 ? (filled / capacity) * 100 : 0;
+
+    if (percentage >= 100) {
+      return {
+        label: "Penuh",
+        className: "bg-slate-200 text-slate-600",
+        percentage,
+      };
+    }
+
+    if (percentage >= 80) {
+      return {
+        label: "Hampir Penuh",
+        className: "bg-orange-100 text-orange-700",
+        percentage,
+      };
+    }
+
+    return {
+      label: "Tersedia",
+      className: "bg-green-100 text-green-700",
+      percentage,
+    };
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -210,7 +236,7 @@ export default function AdminDashboard() {
 
       {/* Locations Mini List */}
       <div className="mt-12 mb-8">
-        <div className="flex items-center justify-between mb-6 px-2">
+        <div className="flex flex-col gap-3 mb-6 px-2 sm:flex-row sm:items-center sm:justify-between">
           <h3 className="text-xl font-bold text-on-surface">Lokasi Terbaru</h3>
           <Link
             className="text-sm font-bold text-primary hover:underline flex items-center gap-1"
@@ -222,7 +248,82 @@ export default function AdminDashboard() {
             </span>
           </Link>
         </div>
-        <div className="bg-white rounded-2xl border border-outline-variant overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+
+        <div className="space-y-4 md:hidden">
+          {stats?.recentLocations.map((loc) => {
+            const capacity = Number(loc.total_capacity) || 0;
+            const filled = Number(loc.total_filled) || 0;
+            const status = getLocationStatus(capacity, filled);
+
+            return (
+              <article
+                key={loc.id}
+                className="rounded-2xl border border-outline-variant bg-white p-4 shadow-sm"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <h4 className="text-sm font-bold text-on-surface">
+                      {loc.nama_lokasi}
+                    </h4>
+                    <p className="mt-1 line-clamp-2 text-xs font-medium text-outline">
+                      {loc.alamat}
+                    </p>
+                  </div>
+                  <span
+                    className={`shrink-0 rounded-full px-3 py-1 text-[10px] font-bold uppercase ${status.className}`}
+                  >
+                    {status.label}
+                  </span>
+                </div>
+
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  <div className="rounded-xl bg-surface-container-low p-3">
+                    <p className="text-[10px] font-bold uppercase text-outline">
+                      Kapasitas
+                    </p>
+                    <p className="mt-1 text-lg font-bold text-on-surface">
+                      {capacity}
+                    </p>
+                  </div>
+                  <div className="rounded-xl bg-surface-container-low p-3">
+                    <p className="text-[10px] font-bold uppercase text-outline">
+                      Terisi
+                    </p>
+                    <p className="mt-1 text-lg font-bold text-on-surface">
+                      {filled}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <div className="h-2 overflow-hidden rounded-full bg-surface-container">
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: `${Math.min(status.percentage, 100)}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                <Link
+                  href="/dashboard/admin/tempat"
+                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary/10 bg-primary/5 px-4 py-3 text-xs font-bold text-primary transition-all hover:bg-primary hover:text-on-primary"
+                >
+                  <span className="material-symbols-outlined text-[16px]">
+                    settings
+                  </span>
+                  Kelola
+                </Link>
+              </article>
+            );
+          })}
+          {stats?.recentLocations.length === 0 && (
+            <div className="rounded-2xl border border-outline-variant bg-white p-8 text-center text-sm font-medium text-outline">
+              Belum ada data lokasi yang terdaftar.
+            </div>
+          )}
+        </div>
+
+        <div className="hidden bg-white rounded-2xl border border-outline-variant overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 md:block">
           <table className="w-full min-w-[640px] text-left">
             <thead className="bg-surface-container-low border-b border-outline-variant">
               <tr>
@@ -247,18 +348,7 @@ export default function AdminDashboard() {
               {stats?.recentLocations.map((loc) => {
                 const capacity = Number(loc.total_capacity) || 0;
                 const filled = Number(loc.total_filled) || 0;
-                const percentage = capacity > 0 ? (filled / capacity) * 100 : 0;
-
-                let statusLabel = "Tersedia";
-                let statusClass = "bg-green-100 text-green-700";
-
-                if (percentage >= 100) {
-                  statusLabel = "Penuh";
-                  statusClass = "bg-slate-200 text-slate-600";
-                } else if (percentage >= 80) {
-                  statusLabel = "Hampir Penuh";
-                  statusClass = "bg-orange-100 text-orange-700";
-                }
+                const status = getLocationStatus(capacity, filled);
 
                 return (
                   <tr
@@ -283,9 +373,9 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`px-3 py-1 text-[10px] font-bold rounded-full uppercase ${statusClass}`}
+                        className={`px-3 py-1 text-[10px] font-bold rounded-full uppercase ${status.className}`}
                       >
-                        {statusLabel}
+                        {status.label}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">

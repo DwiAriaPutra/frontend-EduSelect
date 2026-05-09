@@ -287,8 +287,84 @@ export default function AdminTempatPage() {
         </div>
       </div>
 
+      {/* Mobile Location Cards */}
+      <div className="space-y-4 md:hidden">
+        {filteredLocations.map((loc) => {
+          const quotaL = loc.quotas?.find((q) => q.gender === "L");
+          const quotaP = loc.quotas?.find((q) => q.gender === "P");
+
+          return (
+            <article
+              key={loc.id}
+              className="rounded-2xl border border-outline-variant bg-white p-4 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-bold text-on-surface">
+                    {loc.nama_lokasi}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-xs font-medium text-outline">
+                    {loc.alamat}
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase text-primary">
+                  LOK-{loc.id.toString().padStart(3, "0")}
+                </span>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="rounded-xl bg-surface-container-low p-3">
+                  <p className="text-[10px] font-bold uppercase text-outline">
+                    Kuota L
+                  </p>
+                  <p className="mt-1 text-lg font-bold text-on-surface">
+                    {quotaL ? quotaL.total_max : 0}
+                  </p>
+                </div>
+                <div className="rounded-xl bg-surface-container-low p-3">
+                  <p className="text-[10px] font-bold uppercase text-outline">
+                    Kuota P
+                  </p>
+                  <p className="mt-1 text-lg font-bold text-on-surface">
+                    {quotaP ? quotaP.total_max : 0}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => handleEditClick(loc)}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-primary/10 bg-primary/5 px-4 py-3 text-xs font-bold text-primary transition-all hover:bg-primary hover:text-on-primary"
+                  title="Edit Lokasi"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    edit
+                  </span>
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteClick(loc)}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-error/10 bg-error/5 px-4 py-3 text-xs font-bold text-error transition-all hover:bg-error hover:text-on-error"
+                  title="Hapus Lokasi"
+                >
+                  <span className="material-symbols-outlined text-[18px]">
+                    delete
+                  </span>
+                  Hapus
+                </button>
+              </div>
+            </article>
+          );
+        })}
+        {filteredLocations.length === 0 && (
+          <div className="rounded-2xl border border-outline-variant bg-white p-8 text-center text-sm font-bold text-outline">
+            Tidak ada lokasi yang ditemukan.
+          </div>
+        )}
+      </div>
+
       {/* Table Container */}
-      <div className="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+      <div className="hidden bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[900px] border-collapse">
             <thead>
