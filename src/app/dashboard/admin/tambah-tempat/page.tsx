@@ -242,7 +242,7 @@ export default function AdminTambahTempatPage() {
 
           {/* Side Helper Column */}
           <div className="space-y-8">
-            <div className="bg-white rounded-2xl border border-outline-variant p-8 shadow-sm hover:-translate-y-1 hover:shadow-xl transition-all duration-300 sticky top-24">
+            <div className="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm hover:-translate-y-1 hover:shadow-xl transition-all duration-300 sticky top-24 sm:p-8">
               <h4 className="text-[11px] font-bold text-outline uppercase tracking-widest mb-6">
                 Aksi Formulir
               </h4>

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: var(--font-inter);
 
@@ -119,8 +121,19 @@
 }
 
 @layer base {
+  :root,
+  html {
+    color-scheme: only light;
+  }
+
   body {
     @apply bg-background text-on-background font-sans;
+  }
+
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-on-background);
   }
 }
 
@@ -185,4 +198,24 @@
   line-height: var(--line-height-label-sm);
   letter-spacing: var(--letter-spacing-label-sm);
   font-weight: var(--font-weight-label-sm);
+}
+
+@media (max-width: 640px) {
+  .font-display-lg {
+    font-size: 36px;
+    line-height: 1.15;
+  }
+
+  .font-display-md {
+    font-size: 30px;
+    line-height: 1.2;
+  }
+
+  .font-headline-lg {
+    font-size: 26px;
+  }
+
+  .font-body-lg {
+    font-size: 16px;
+  }
 }

@@ -81,10 +81,10 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="px-8 py-8 pb-12">
+    <div className="px-4 py-6 pb-10 sm:px-6 md:px-8 md:py-8 md:pb-12">
       {/* Quick Actions & Welcome */}
-      <div className="flex justify-between items-end mb-8">
-        <div>
+      <div className="flex flex-col gap-4 mb-8 md:flex-row md:items-end md:justify-between">
+        <div className="min-w-0">
           <h2 className="text-2xl font-bold text-on-surface mb-1">
             Selamat Datang, {adminName}
           </h2>
@@ -94,10 +94,10 @@ export default function AdminDashboard() {
         </div>
         <button
           onClick={() => router.push("/dashboard/admin/tambah-tempat")}
-          className="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-xl hover:opacity-90 active:scale-95 transition-all font-bold shadow-lg shadow-primary/20"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-on-primary shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 sm:text-base md:w-auto md:px-6"
         >
           <span className="material-symbols-outlined">add</span>
-          <span>Tambah Lokasi Baru</span>
+          <span className="truncate">Tambah Lokasi Baru</span>
         </button>
       </div>
 
@@ -158,7 +158,7 @@ export default function AdminDashboard() {
       {/* Visualization & Detail Section */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Pantau Lokasi Card */}
-        <div className="lg:col-span-3 bg-primary text-on-primary p-8 rounded-2xl overflow-hidden relative flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-lg shadow-primary/20">
+        <div className="lg:col-span-3 bg-primary text-on-primary p-5 rounded-2xl overflow-hidden relative flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-lg shadow-primary/20 sm:p-8">
           <div className="relative z-10">
             <h3 className="text-xl font-bold mb-2">Pantau Lokasi</h3>
             {/* Perbaikan di baris bawah ini: Menambahkan w-full atau w-72 dan menghapus max-w-md jika dirasa terlalu sempit */}
@@ -223,7 +223,7 @@ export default function AdminDashboard() {
           </Link>
         </div>
         <div className="bg-white rounded-2xl border border-outline-variant overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-          <table className="w-full text-left">
+          <table className="w-full min-w-[640px] text-left">
             <thead className="bg-surface-container-low border-b border-outline-variant">
               <tr>
                 <th className="px-6 py-4 text-xs font-bold text-outline uppercase tracking-wider">

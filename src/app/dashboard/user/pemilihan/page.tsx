@@ -239,7 +239,7 @@ export default function PemilihanTempat() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       {/* Welcome/Info Section */}
       <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
@@ -251,7 +251,7 @@ export default function PemilihanTempat() {
             masih tersedia sebelum menekan tombol pilih.
           </p>
         </div>
-        <div className="flex items-center gap-3 bg-blue-50 px-4 py-2 rounded-lg border border-blue-100">
+        <div className="flex w-full items-center gap-3 bg-blue-50 px-4 py-2 rounded-lg border border-blue-100 md:w-auto">
           <span className="material-symbols-outlined text-primary">info</span>
           <span className="text-xs font-medium text-blue-700">
             Pemilihan lokasi ditutup dalam 2 hari
@@ -274,7 +274,7 @@ export default function PemilihanTempat() {
           />
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          <button className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
+          <button className="flex flex-1 items-center justify-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors sm:flex-none">
             <span className="material-symbols-outlined text-sm">
               filter_list
             </span>
@@ -285,7 +285,7 @@ export default function PemilihanTempat() {
               fetchLocations();
               fetchUserStatus();
             }}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm"
+            className="flex flex-1 items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm sm:flex-none"
           >
             Refresh
           </button>
@@ -339,10 +339,149 @@ export default function PemilihanTempat() {
         </div>
       </div>
 
+      {/* Mobile Location Cards */}
+      <div className="space-y-4 md:hidden">
+        {filteredLocations.length > 0 ? (
+          filteredLocations.map((loc) => {
+            const sisaL = getSisaKuota(loc, "L");
+            const sisaP = getSisaKuota(loc, "P");
+            const isCurrentLocation = selectionStatus.locationId === loc.id;
+            const isLockedHere = lockStatus.isLocked && lockStatus.locationId === loc.id;
+            const canChoose =
+              !lockStatus.isLocked &&
+              !selectionStatus.isConfirmed &&
+              isProcessing === null &&
+              getSisaKuota(loc, user?.gender || "") > 0;
+
+            return (
+              <article
+                key={loc.id}
+                className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <h3 className="text-base font-bold text-on-surface">
+                      {loc.nama_lokasi}
+                    </h3>
+                    <p className="mt-1 line-clamp-2 text-sm text-slate-600">
+                      {loc.alamat}
+                    </p>
+                  </div>
+                  {isCurrentLocation && (
+                    <span className="shrink-0 rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-bold text-orange-600">
+                      {selectionStatus.isConfirmed ? "Final" : "Terpilih"}
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  <div className="rounded-xl bg-blue-50 p-3">
+                    <p className="text-[11px] font-bold uppercase text-blue-700">
+                      Laki-laki
+                    </p>
+                    <p className="mt-1 text-lg font-bold text-blue-900">
+                      {sisaL > 0 ? `${sisaL} sisa` : "Penuh"}
+                    </p>
+                  </div>
+                  <div className="rounded-xl bg-rose-50 p-3">
+                    <p className="text-[11px] font-bold uppercase text-rose-700">
+                      Perempuan
+                    </p>
+                    <p className="mt-1 text-lg font-bold text-rose-900">
+                      {sisaP > 0 ? `${sisaP} sisa` : "Penuh"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex gap-2">
+                  {isLockedHere && !selectionStatus.isConfirmed && (
+                    <button
+                      onClick={() => setIsCancelModalOpen(true)}
+                      disabled={isProcessing !== null}
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-error/20 text-error transition-colors hover:bg-error/10 disabled:opacity-50"
+                      title="Batalkan Pilihan"
+                    >
+                      <span className="material-symbols-outlined">cancel</span>
+                    </button>
+                  )}
+
+                  {(isLockedHere ||
+                    (isCurrentLocation && selectionStatus.isConfirmed)) && (
+                    <button
+                      onClick={() => {
+                        if (!selectionStatus.isConfirmed) {
+                          setPendingLocationId(loc.id);
+                          setIsConfirmModalOpen(true);
+                        }
+                      }}
+                      disabled={selectionStatus.isConfirmed || isProcessing !== null}
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors ${
+                        selectionStatus.isConfirmed
+                          ? "bg-orange-50 text-orange-600"
+                          : "border border-orange-200 text-orange-500 hover:bg-orange-50"
+                      } disabled:opacity-50`}
+                      title={
+                        selectionStatus.isConfirmed
+                          ? "Lokasi Terkunci"
+                          : "Konfirmasi Pilihan"
+                      }
+                    >
+                      <span
+                        className="material-symbols-outlined"
+                        style={{
+                          fontVariationSettings: selectionStatus.isConfirmed
+                            ? "'FILL' 1"
+                            : "'FILL' 0",
+                        }}
+                      >
+                        {selectionStatus.isConfirmed ? "lock" : "lock_open"}
+                      </span>
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => handleLock(loc.id)}
+                    disabled={!canChoose}
+                    className={`flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold transition-all ${
+                      canChoose
+                        ? "bg-primary text-white active:scale-95"
+                        : "bg-slate-100 text-slate-400"
+                    }`}
+                  >
+                    {isProcessing === `lock-${loc.id}` ? (
+                      <div className="h-5 w-5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                    ) : (
+                      !isCurrentLocation && (
+                        <span className="material-symbols-outlined text-[20px]">
+                          lock_open
+                        </span>
+                      )
+                    )}
+                    <span className="truncate">
+                      {isProcessing === `lock-${loc.id}`
+                        ? "Memproses..."
+                        : isCurrentLocation
+                        ? selectionStatus.isConfirmed
+                          ? "Terkonfirmasi"
+                          : "Terpilih"
+                        : "Pilih Lokasi"}
+                    </span>
+                  </button>
+                </div>
+              </article>
+            );
+          })
+        ) : (
+          <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-500">
+            Tidak ada lokasi yang ditemukan.
+          </div>
+        )}
+      </div>
+
       {/* Table Container */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+      <div className="hidden bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm md:block">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full min-w-[900px] text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
                 <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
@@ -522,7 +661,7 @@ export default function PemilihanTempat() {
           </table>
         </div>
         {/* Pagination Placeholder */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+        <div className="px-4 py-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <span className="text-sm text-slate-500">
             Menampilkan {filteredLocations.length} lokasi
           </span>
@@ -607,14 +746,14 @@ export default function PemilihanTempat() {
 
       {/* Final Confirmation Modal */}
       {isConfirmModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
             onClick={() => setIsConfirmModalOpen(false)}
           />
 
           <div className="relative z-10 w-full max-w-[360px] bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all">
-            <div className="p-8 text-center">
+            <div className="p-6 text-center sm:p-8">
               <div className="w-20 h-20 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="material-symbols-outlined text-[48px]">
                   lock
@@ -631,7 +770,7 @@ export default function PemilihanTempat() {
                 . Pilihan ini bersifat final dan tidak dapat diubah lagi.
               </p>
             </div>
-            <div className="p-4 bg-slate-50 flex gap-3">
+            <div className="p-4 bg-slate-50 flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => setIsConfirmModalOpen(false)}
                 className="flex-1 py-3 text-sm font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors border border-slate-200"
@@ -652,14 +791,14 @@ export default function PemilihanTempat() {
 
       {/* Cancel Confirmation Modal */}
       {isCancelModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
             onClick={() => setIsCancelModalOpen(false)}
           />
 
           <div className="relative z-10 w-full max-w-[360px] bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all">
-            <div className="p-8 text-center">
+            <div className="p-6 text-center sm:p-8">
               <div className="w-20 h-20 bg-error/10 text-error rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="material-symbols-outlined text-[48px]">
                   warning
@@ -672,7 +811,7 @@ export default function PemilihanTempat() {
                 Apakah Anda yakin ingin membatalkan pilihan lokasi ini? Kuota akan dilepaskan dan dapat diambil oleh mahasiswa lain.
               </p>
             </div>
-            <div className="p-4 bg-slate-50 flex gap-3">
+            <div className="p-4 bg-slate-50 flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => setIsCancelModalOpen(false)}
                 className="flex-1 py-3 text-sm font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors border border-slate-200"

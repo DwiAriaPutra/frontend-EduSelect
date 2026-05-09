@@ -22,10 +22,13 @@ interface Location {
 export default function Home() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const fetchLocations = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/locations`);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/locations`
+      );
       setLocations(response.data);
     } catch (error) {
       console.error("Error fetching locations:", error);
@@ -58,17 +61,29 @@ export default function Home() {
   return (
     <div className="bg-background text-on-background min-h-screen flex flex-col">
       {/* TopAppBar */}
-      <header className="bg-white/80 backdrop-blur-md dark:bg-slate-950/80 border-b border-slate-200/50 dark:border-slate-800 shadow-sm sticky top-0 z-50">
-        <nav className="grid grid-cols-3 items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
+      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/50 shadow-sm sticky top-0 z-50">
+        <nav className="w-full px-4 py-3 max-w-[1280px] mx-auto md:grid md:grid-cols-3 md:items-center md:px-6 md:py-4">
+          <div className="flex items-center justify-between gap-3 md:contents">
           <Link
             href="/"
-            className="flex items-center gap-2 text-xl font-bold text-primary dark:text-white tracking-tight justify-self-start"
+            className="flex min-w-0 items-center gap-2 text-base font-bold text-primary tracking-tight justify-self-start sm:text-xl"
           >
             <span className="material-symbols-outlined text-primary text-2xl">
               school
             </span>
-            <span>Sistem Pemilihan Lokasi</span>
+            <span className="truncate">Sistem Pemilihan Lokasi</span>
           </Link>
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-outline-variant text-primary transition-colors hover:bg-surface-container md:hidden"
+            aria-label={isMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen((open) => !open)}
+          >
+            <span className="material-symbols-outlined">
+              {isMenuOpen ? "close" : "menu"}
+            </span>
+          </button>
           <div className="hidden md:flex items-center gap-8 justify-self-center">
             <Link
               className="font-sans text-sm font-semibold tracking-tight text-primary border-b-2 border-primary pb-1"
@@ -77,36 +92,76 @@ export default function Home() {
               Beranda
             </Link>
             <Link
-              className="font-sans text-sm font-medium tracking-tight text-slate-600 dark:text-slate-400 hover:text-primary transition-colors"
+              className="font-sans text-sm font-medium tracking-tight text-slate-600 hover:text-primary transition-colors"
               href="/panduan"
             >
               Panduan
             </Link>
             <Link
-              className="font-sans text-sm font-medium tracking-tight text-slate-600 dark:text-slate-400 hover:text-primary transition-colors"
+              className="font-sans text-sm font-medium tracking-tight text-slate-600 hover:text-primary transition-colors"
               href="/kontak"
             >
               Kontak
             </Link>
           </div>
-          <div className="justify-self-end flex items-center gap-2">
+          <div className="hidden justify-self-end items-center gap-2 md:flex">
             <Link href="/login">
-              <button className="text-primary hover:bg-surface-container px-4 py-2 rounded-full font-label-md text-label-md transition-all">
+              <button className="text-primary hover:bg-surface-container px-3 py-2 rounded-full font-label-md text-label-md transition-all sm:px-4">
                 Masuk
               </button>
             </Link>
             <Link href="/register">
-              <button className="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md text-label-md hover:bg-primary-container active:scale-95 transition-all shadow-sm">
+              <button className="bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md hover:bg-primary-container active:scale-95 transition-all shadow-sm sm:px-6">
                 Daftar
               </button>
             </Link>
           </div>
+          </div>
+          {isMenuOpen && (
+            <div className="mt-3 rounded-2xl border border-outline-variant bg-white p-3 shadow-lg md:hidden">
+              <div className="flex flex-col gap-1">
+                <Link
+                  className="rounded-xl px-4 py-3 text-sm font-bold text-primary bg-primary/5"
+                  href="/"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Beranda
+                </Link>
+                <Link
+                  className="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 hover:bg-surface-container hover:text-primary"
+                  href="/panduan"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Panduan
+                </Link>
+                <Link
+                  className="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 hover:bg-surface-container hover:text-primary"
+                  href="/kontak"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Kontak
+                </Link>
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-outline-variant pt-3">
+                <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                  <button className="w-full rounded-xl px-4 py-3 text-sm font-bold text-primary hover:bg-surface-container">
+                    Masuk
+                  </button>
+                </Link>
+                <Link href="/register" onClick={() => setIsMenuOpen(false)}>
+                  <button className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-on-primary shadow-sm">
+                    Daftar
+                  </button>
+                </Link>
+              </div>
+            </div>
+          )}
         </nav>
       </header>
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section id="beranda" className="relative py-xxl px-6 overflow-hidden">
+        <section id="beranda" className="relative py-xl px-4 overflow-hidden sm:px-6 md:py-xxl">
           <div className="max-w-[1280px] mx-auto flex flex-col items-center text-center">
             <div className="max-w-3xl space-y-lg">
               <h1 className="font-display-lg text-on-surface tracking-tight">
@@ -129,7 +184,7 @@ export default function Home() {
         </section>
 
         {/* 3-Step Process Section */}
-        <section id="panduan" className="py-xxl bg-surface-container-low px-6">
+        <section id="panduan" className="py-xl bg-surface-container-low px-4 sm:px-6 md:py-xxl">
           <div className="max-w-[1280px] mx-auto">
             <div className="text-center mb-xxl">
               <h2 className="font-headline-lg text-on-surface">
@@ -189,7 +244,7 @@ export default function Home() {
         </section>
 
         {/* Preview Table Section */}
-        <section className="py-xxl px-6">
+        <section className="py-xl px-4 sm:px-6 md:py-xxl">
           <div className="max-w-[1280px] mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-end mb-lg gap-md">
               <div>
@@ -208,7 +263,7 @@ export default function Home() {
               </div>
             </div>
             <div className="overflow-x-auto rounded-xl border border-outline-variant bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full min-w-[640px] text-left border-collapse">
                 <thead className="bg-surface-container-low">
                   <tr>
                     <th className="px-lg py-4 font-label-md text-on-surface-variant">
@@ -286,7 +341,7 @@ export default function Home() {
         </section>
 
         {/* Contact Section */}
-        <section id="kontak" className="py-xxl bg-surface-container-low px-6">
+        <section id="kontak" className="py-xl bg-surface-container-low px-4 sm:px-6 md:py-xxl">
           <div className="max-w-[1280px] mx-auto text-center">
             <h2 className="font-headline-lg text-on-surface mb-md">
               Hubungi Kami
@@ -335,12 +390,12 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 w-full mt-xxl">
-        <div className="w-full py-8 px-6 flex flex-col md:flex-row justify-between items-center max-w-[1280px] mx-auto gap-4">
-          <div className="font-sans text-xs text-slate-600 dark:text-slate-400">
+      <footer className="bg-slate-50  border-t border-slate-200  w-full mt-xxl">
+        <div className="w-full py-8 px-4 flex flex-col md:flex-row justify-between items-center max-w-[1280px] mx-auto gap-4 sm:px-6">
+          <div className="font-sans text-xs text-slate-600 ">
             © 2026 Sistem Pemilihan Lokasi KKN. Hak Cipta Dilindungi.
           </div>
-          <div className="flex gap-lg">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-lg">
             <a
               className="font-sans text-xs text-slate-500 hover:text-blue-700 transition-all"
               href="#"

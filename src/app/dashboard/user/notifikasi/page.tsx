@@ -82,15 +82,15 @@ export default function UserNotificationPage() {
 
   if (loading) {
     return (
-      <div className="p-8 flex items-center justify-center">
+      <div className="p-4 flex items-center justify-center sm:p-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="flex items-start justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-bold text-on-surface">Notifikasi & Pembaruan</h1>
           <p className="text-sm text-outline mt-1">Informasi terbaru mengenai pemilihan lokasi KKN.</p>
@@ -113,7 +113,7 @@ export default function UserNotificationPage() {
             return (
               <div 
                 key={index} 
-                className="bg-white border border-outline-variant rounded-2xl p-4 flex gap-4 hover:shadow-md transition-all duration-300 hover:scale-[1.01] animate-in fade-in slide-in-from-bottom-2"
+                className="bg-white border border-outline-variant rounded-2xl p-4 flex gap-3 hover:shadow-md transition-all duration-300 hover:scale-[1.01] animate-in fade-in slide-in-from-bottom-2 sm:gap-4"
                 style={{ animationDelay: `${index * 50}ms`, animationFillMode: 'both' }}
               >
                 <div className={`w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center ${style.bgColor}`}>

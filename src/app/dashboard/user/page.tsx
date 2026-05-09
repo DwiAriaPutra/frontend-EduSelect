@@ -138,7 +138,7 @@ export default function UserDashboard() {
   }
 
   return (
-    <div className="pt-8 px-8 pb-12">
+    <div className="px-4 pb-10 pt-6 sm:px-6 md:px-8 md:pb-12 md:pt-8">
       {/* Welcome Header */}
       <section className="mb-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -151,7 +151,7 @@ export default function UserDashboard() {
               proses pemilihan lokasi KKN.
             </p>
           </div>
-          <div className="bg-primary-fixed p-4 rounded-xl flex items-center gap-4 border border-outline-variant/30 hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-default">
+          <div className="w-full bg-primary-fixed p-4 rounded-xl flex items-center gap-4 border border-outline-variant/30 hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-default md:w-auto">
             <div className="bg-primary-container p-3 rounded-lg text-white">
               <span className="material-symbols-outlined">event_available</span>
             </div>
@@ -233,8 +233,8 @@ export default function UserDashboard() {
       {/* Detailed Summary Section */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Info Section */}
-        <div className="lg:col-span-3 bg-white border border-outline-variant/50 rounded-xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-          <div className="flex items-center justify-between mb-8">
+        <div className="lg:col-span-3 bg-white border border-outline-variant/50 rounded-xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 sm:p-8">
+          <div className="flex flex-col gap-3 mb-8 sm:flex-row sm:items-center sm:justify-between">
             <h5 className="font-title-lg text-on-surface">
               Panduan Langkah Selanjutnya
             </h5>

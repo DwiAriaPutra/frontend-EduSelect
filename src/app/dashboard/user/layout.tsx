@@ -73,11 +73,14 @@ export default function UserDashboardLayout({
   }
 
   return (
-    <div className="bg-background text-on-background antialiased min-h-screen flex">
+    <div
+      className="bg-background text-on-background antialiased min-h-screen flex"
+      style={{ colorScheme: "light" }}
+    >
       {/* Sidebar */}
-      <aside className="fixed top-0 left-0 h-full w-64 flex flex-col z-50 bg-surface-container-low border-r border-outline-variant shadow-sm transition-all duration-300">
+      <aside className="fixed bottom-0 left-0 h-20 w-full flex flex-col z-50 bg-surface-container-low border-t border-outline-variant shadow-sm transition-all duration-300 md:top-0 md:bottom-auto md:h-full md:w-64 md:border-r md:border-t-0">
         {/* Brand */}
-        <div className="p-6 mb-2">
+        <div className="hidden p-6 mb-2 md:block">
           <div className="flex items-center gap-3 px-2">
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-on-primary shadow-lg shadow-primary/20">
               <span className="material-symbols-outlined font-bold">school</span>
@@ -90,7 +93,7 @@ export default function UserDashboardLayout({
         </div>
 
         {/* Navigation */}
-        <nav className="flex-grow px-4 space-y-1">
+        <nav className="grid h-full grid-cols-3 gap-1 px-2 py-2 md:block md:h-auto md:flex-grow md:px-4 md:py-0 md:space-y-1">
           <NavItem 
             href="/dashboard/user" 
             icon="dashboard" 
@@ -103,7 +106,7 @@ export default function UserDashboardLayout({
             label="Pilih Lokasi" 
             isActive={pathname === "/dashboard/user/pemilihan"} 
           />
-          <div className="my-4 mx-2 border-t border-outline-variant opacity-50"></div>
+          <div className="hidden my-4 mx-2 border-t border-outline-variant opacity-50 md:block"></div>
           <NavItem 
             href="/dashboard/user/profil" 
             icon="person" 
@@ -113,7 +116,7 @@ export default function UserDashboardLayout({
         </nav>
 
         {/* Footer / User Profile */}
-        <div className="p-4 mt-auto">
+        <div className="hidden p-4 mt-auto md:block">
           <div className="bg-surface-container-high rounded-2xl p-4 border border-outline-variant shadow-sm">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs ring-2 ring-white">
@@ -126,7 +129,7 @@ export default function UserDashboardLayout({
             </div>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center justify-center gap-2 py-2.5 bg-error/10 hover:bg-error/20 text-error rounded-xl transition-all duration-200 text-xs font-bold"
+              className="w-full flex items-center justify-center gap-2 rounded-xl border border-error/20 bg-error/10 py-2.5 text-xs font-bold text-error transition-all duration-200 hover:bg-error/20 active:scale-95"
             >
               <span className="material-symbols-outlined text-[18px]">logout</span>
               Keluar Akun
@@ -136,18 +139,30 @@ export default function UserDashboardLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 min-h-screen flex-grow flex flex-col">
+      <main className="min-h-screen flex-grow flex flex-col pb-24 md:ml-64 md:pb-0">
         {/* TopAppBar Shell */}
-        <header className="sticky top-0 right-0 h-16 flex justify-between items-center px-8 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant">
-          <div>
-            <h2 className="text-lg font-bold text-on-surface tracking-tight">{getTitle()}</h2>
+        <header className="sticky top-0 right-0 min-h-16 flex justify-between items-center gap-4 px-4 py-3 z-40 bg-white/80 backdrop-blur-md border-b border-outline-variant md:h-16 md:px-8 md:py-0">
+          <div className="min-w-0">
+            <h2 className="truncate text-base font-bold text-on-surface tracking-tight md:text-lg">{getTitle()}</h2>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/dashboard/user/notifikasi">
               <TopBarButton icon="notifications" badge />
             </Link>
-            <div className="h-6 w-[1px] bg-outline-variant mx-2"></div>
-            <TopBarButton icon="settings" />
+            <div className="hidden h-6 w-[1px] bg-outline-variant mx-2 sm:block"></div>
+            <div className="hidden sm:block">
+              <TopBarButton icon="settings" />
+            </div>
+            <button
+              onClick={handleLogout}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-error/20 bg-error/10 text-error transition-colors hover:bg-error/20 md:hidden"
+              title="Keluar Akun"
+              aria-label="Keluar Akun"
+            >
+              <span className="material-symbols-outlined text-[20px]">
+                logout
+              </span>
+            </button>
           </div>
         </header>
 
@@ -164,20 +179,20 @@ function NavItem({ href, icon, label, isActive }: { href: string; icon: string; 
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm group ${
+      className={`flex h-full flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-center transition-all duration-200 font-bold text-[11px] group md:h-auto md:flex-row md:justify-start md:gap-3 md:px-4 md:py-3 md:text-left md:text-sm ${
         isActive
           ? "bg-primary text-on-primary shadow-md shadow-primary/20"
           : "text-outline hover:bg-surface-container hover:text-primary"
       }`}
     >
-      <span 
+      <span
         className={`material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform ${isActive ? "fill-1" : ""}`}
         style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
       >
         {icon}
       </span>
       <span>{label}</span>
-      {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-on-primary"></div>}
+      {isActive && <div className="hidden ml-auto w-1.5 h-1.5 rounded-full bg-on-primary md:block"></div>}
     </Link>
   );
 }

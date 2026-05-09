@@ -186,7 +186,7 @@ export default function AdminTempatPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       {/* Header Section */}
       <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -199,10 +199,10 @@ export default function AdminTempatPage() {
         </div>
         <button
           onClick={() => router.push("/dashboard/admin/tambah-tempat")}
-          className="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:opacity-90 transition-opacity active:scale-95 shadow-lg shadow-primary/20"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-on-primary shadow-lg shadow-primary/20 transition-opacity hover:opacity-90 active:scale-95 sm:text-base md:w-auto md:px-6"
         >
           <span className="material-symbols-outlined text-[20px]">add</span>
-          Tambah Lokasi Baru
+          <span className="truncate">Tambah Lokasi Baru</span>
         </button>
       </div>
 
@@ -221,7 +221,7 @@ export default function AdminTempatPage() {
           />
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          <button className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">
+          <button className="flex flex-1 items-center justify-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors sm:flex-none">
             <span className="material-symbols-outlined text-sm">
               filter_list
             </span>
@@ -229,7 +229,7 @@ export default function AdminTempatPage() {
           </button>
           <button
             onClick={fetchLocations}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm"
+            className="flex flex-1 items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm sm:flex-none"
           >
             Refresh
           </button>
@@ -290,7 +290,7 @@ export default function AdminTempatPage() {
       {/* Table Container */}
       <div className="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
+          <table className="w-full min-w-[900px] border-collapse">
             <thead>
               <tr className="bg-surface-container-low text-left">
                 <th className="py-4 px-6 text-xs text-outline font-bold uppercase tracking-wider">
@@ -490,7 +490,7 @@ export default function AdminTempatPage() {
           />
 
           <div className="relative z-10 w-full max-w-[320px] bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all">
-            <div className="p-8 text-center">
+            <div className="p-6 text-center sm:p-8">
               <div className="w-20 h-20 bg-error/10 text-error rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="material-symbols-outlined text-[48px]">
                   delete_forever
@@ -529,7 +529,8 @@ export default function AdminTempatPage() {
       {/* FAB for Quick Addition */}
       <button
         onClick={() => router.push("/dashboard/admin/tambah-tempat")}
-        className="fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-transform z-50 md:hidden"
+        className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-on-primary shadow-2xl transition-transform hover:scale-110 active:scale-95 md:hidden"
+        aria-label="Tambah Lokasi Baru"
       >
         <span className="material-symbols-outlined text-[28px]">add</span>
       </button>

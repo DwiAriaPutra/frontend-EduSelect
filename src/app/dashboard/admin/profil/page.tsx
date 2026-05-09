@@ -119,11 +119,11 @@ export default function AdminProfilPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       {/* Hero Profile Section */}
       <div className="grid grid-cols-12 gap-6 mb-6">
         {/* Profile Identity Card */}
-        <div className="col-span-12 lg:col-span-8 bg-white border border-outline-variant rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8 hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+        <div className="col-span-12 lg:col-span-8 bg-white border border-outline-variant rounded-2xl p-5 flex flex-col md:flex-row items-center gap-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 sm:p-8 md:gap-8">
           <div className="relative">
             <div className="w-32 h-32 rounded-full border-4 border-surface-container-low bg-primary-container flex items-center justify-center text-white text-4xl font-bold overflow-hidden shadow-inner">
               {adminName.charAt(0)}
@@ -148,7 +148,7 @@ export default function AdminProfilPage() {
           </div>
         </div>
         {/* Stats Quick View */}
-        <div className="col-span-12 lg:col-span-4 bg-primary text-on-primary rounded-2xl p-8 flex flex-col justify-center hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-lg shadow-primary/20">
+        <div className="col-span-12 lg:col-span-4 bg-primary text-on-primary rounded-2xl p-5 flex flex-col justify-center hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-lg shadow-primary/20 sm:p-8">
           <div className="mb-4">
             <span className="material-symbols-outlined text-4xl opacity-50">
               verified_user
@@ -170,7 +170,7 @@ export default function AdminProfilPage() {
       <div className="grid grid-cols-12 gap-6">
         {/* Personal Information Grid */}
         <div className="col-span-12 lg:col-span-7 bg-white border border-outline-variant rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-          <div className="px-8 py-6 border-b border-outline-variant/30 flex justify-between items-center">
+          <div className="px-5 py-5 border-b border-outline-variant/30 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-6">
             <h4 className="text-xl font-bold text-on-surface">
               Detail Informasi
             </h4>
@@ -178,7 +178,7 @@ export default function AdminProfilPage() {
               Edit Detail
             </button>
           </div>
-          <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-6">
+          <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-6 sm:p-8">
             <InfoItem label="Nama Lengkap" value={adminName} />
             <InfoItem label="ID Kepegawaian" value={adminId} />
             <InfoItem label="Role Akses" value="Super Administrator" />
@@ -250,7 +250,7 @@ export default function AdminProfilPage() {
       </div>
 
       {/* Account Security Settings */}
-      <div className="mt-8 bg-surface-container-low rounded-2xl p-8 border border-outline-variant flex flex-col md:flex-row items-center justify-between gap-8 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-sm">
+      <div className="mt-8 bg-surface-container-low rounded-2xl p-5 border border-outline-variant flex flex-col md:flex-row items-center justify-between gap-6 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 shadow-sm sm:p-8 md:gap-8">
         <div className="flex items-center gap-6">
           <div className="w-16 h-16 rounded-2xl bg-white border border-outline-variant/30 flex items-center justify-center text-primary shadow-sm group hover:rotate-12 transition-transform">
             <span className="material-symbols-outlined text-4xl">security</span>
