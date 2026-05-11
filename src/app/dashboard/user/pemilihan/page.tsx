@@ -5,6 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
 
 interface Quota {
   quota_id: number;
@@ -123,6 +124,24 @@ export default function PemilihanTempat() {
 
     initData();
   }, [router, fetchLocations, fetchUserStatus]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
+      auth: { token },
+    });
+
+    socket.on("quota_update", async () => {
+      await Promise.all([fetchLocations(), fetchUserStatus()]);
+    });
+
+    return () => {
+      socket.off("quota_update");
+      socket.disconnect();
+    };
+  }, [fetchLocations, fetchUserStatus]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
