@@ -37,7 +37,9 @@ export default function PemilihanTempat() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [pendingLocationId, setPendingLocationId] = useState<number | null>(null);
+  const [pendingLocationId, setPendingLocationId] = useState<number | null>(
+    null
+  );
   const [lockStatus, setLockStatus] = useState<{
     locationId: number | null;
     isLocked: boolean;
@@ -62,9 +64,12 @@ export default function PemilihanTempat() {
   const fetchLocations = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/locations`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/locations`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setLocations(response.data);
     } catch (error) {
       console.error("Error fetching locations:", error);
@@ -155,7 +160,7 @@ export default function PemilihanTempat() {
   };
 
   const handleConfirm = async () => {
-    setIsProcessing('confirm');
+    setIsProcessing("confirm");
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -169,7 +174,9 @@ export default function PemilihanTempat() {
       await Promise.all([fetchLocations(), fetchUserStatus()]);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Gagal konfirmasi pilihan");
+        toast.error(
+          error.response?.data?.message || "Gagal konfirmasi pilihan"
+        );
       } else {
         toast.error("Terjadi kesalahan sistem");
       }
@@ -179,7 +186,7 @@ export default function PemilihanTempat() {
   };
 
   const handleCancel = async () => {
-    setIsProcessing('cancel');
+    setIsProcessing("cancel");
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -202,7 +209,9 @@ export default function PemilihanTempat() {
       await Promise.all([fetchLocations(), fetchUserStatus()]);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Gagal membatalkan pilihan");
+        toast.error(
+          error.response?.data?.message || "Gagal membatalkan pilihan"
+        );
       } else {
         toast.error("Terjadi kesalahan sistem");
       }
@@ -346,7 +355,8 @@ export default function PemilihanTempat() {
             const sisaL = getSisaKuota(loc, "L");
             const sisaP = getSisaKuota(loc, "P");
             const isCurrentLocation = selectionStatus.locationId === loc.id;
-            const isLockedHere = lockStatus.isLocked && lockStatus.locationId === loc.id;
+            const isLockedHere =
+              lockStatus.isLocked && lockStatus.locationId === loc.id;
             const canChoose =
               !lockStatus.isLocked &&
               !selectionStatus.isConfirmed &&
@@ -414,7 +424,9 @@ export default function PemilihanTempat() {
                           setIsConfirmModalOpen(true);
                         }
                       }}
-                      disabled={selectionStatus.isConfirmed || isProcessing !== null}
+                      disabled={
+                        selectionStatus.isConfirmed || isProcessing !== null
+                      }
                       className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors ${
                         selectionStatus.isConfirmed
                           ? "bg-orange-50 text-orange-600"
@@ -513,9 +525,6 @@ export default function PemilihanTempat() {
                         <span className="text-base font-semibold text-on-surface">
                           {loc.nama_lokasi}
                         </span>
-                        <span className="text-xs text-primary font-medium">
-                          Zona Seleksi
-                        </span>
                       </div>
                     </td>
                     <td className="px-6 py-5 max-w-xs">
@@ -579,7 +588,10 @@ export default function PemilihanTempat() {
                                 setIsConfirmModalOpen(true);
                               }
                             }}
-                            disabled={selectionStatus.isConfirmed || isProcessing !== null}
+                            disabled={
+                              selectionStatus.isConfirmed ||
+                              isProcessing !== null
+                            }
                             className={`p-2 rounded-lg transition-all ${
                               selectionStatus.isConfirmed
                                 ? "text-orange-600 bg-orange-50 cursor-default"
@@ -600,7 +612,9 @@ export default function PemilihanTempat() {
                                     : "'FILL' 0",
                               }}
                             >
-                              {selectionStatus.isConfirmed ? "lock" : "lock_open"}
+                              {selectionStatus.isConfirmed
+                                ? "lock"
+                                : "lock_open"}
                             </span>
                           </button>
                         )}
@@ -765,7 +779,10 @@ export default function PemilihanTempat() {
               <p className="text-sm text-slate-600 leading-relaxed">
                 Anda akan mengonfirmasi pilihan lokasi di{" "}
                 <span className="font-bold text-on-surface">
-                  {locations.find((l) => l.id === pendingLocationId)?.nama_lokasi}
+                  {
+                    locations.find((l) => l.id === pendingLocationId)
+                      ?.nama_lokasi
+                  }
                 </span>
                 . Pilihan ini bersifat final dan tidak dapat diubah lagi.
               </p>
@@ -779,10 +796,10 @@ export default function PemilihanTempat() {
               </button>
               <button
                 onClick={handleConfirm}
-                disabled={isProcessing === 'confirm'}
+                disabled={isProcessing === "confirm"}
                 className="flex-1 py-3 text-sm font-bold text-white bg-orange-500 hover:bg-orange-600 rounded-xl shadow-lg shadow-orange-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isProcessing === 'confirm' ? 'Memproses...' : 'Ya, Konfirmasi'}
+                {isProcessing === "confirm" ? "Memproses..." : "Ya, Konfirmasi"}
               </button>
             </div>
           </div>
@@ -808,7 +825,8 @@ export default function PemilihanTempat() {
                 Batalkan Pilihan?
               </h3>
               <p className="text-sm text-slate-600 leading-relaxed">
-                Apakah Anda yakin ingin membatalkan pilihan lokasi ini? Kuota akan dilepaskan dan dapat diambil oleh mahasiswa lain.
+                Apakah Anda yakin ingin membatalkan pilihan lokasi ini? Kuota
+                akan dilepaskan dan dapat diambil oleh mahasiswa lain.
               </p>
             </div>
             <div className="p-4 bg-slate-50 flex flex-col gap-3 sm:flex-row">
@@ -820,10 +838,10 @@ export default function PemilihanTempat() {
               </button>
               <button
                 onClick={handleCancel}
-                disabled={isProcessing === 'cancel'}
+                disabled={isProcessing === "cancel"}
                 className="flex-1 py-3 text-sm font-bold text-white bg-error rounded-xl hover:bg-red-700 shadow-lg shadow-error/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isProcessing === 'cancel' ? 'Memproses...' : 'Ya, Batalkan'}
+                {isProcessing === "cancel" ? "Memproses..." : "Ya, Batalkan"}
               </button>
             </div>
           </div>

@@ -54,6 +54,7 @@ export default function AdminDashboardLayout({
   const getTitle = () => {
     if (pathname === "/dashboard/admin") return "Ringkasan Dashboard";
     if (pathname === "/dashboard/admin/tempat") return "Daftar Lokasi Seleksi";
+    if (pathname === "/dashboard/admin/mahasiswa") return "Daftar Mahasiswa";
     if (pathname === "/dashboard/admin/tambah-tempat")
       return "Tambah Lokasi Baru";
     if (pathname === "/dashboard/admin/profil") return "Pengaturan Profil";
@@ -93,7 +94,7 @@ export default function AdminDashboardLayout({
         </div>
 
         {/* Navigation */}
-        <nav className="grid h-full grid-cols-4 gap-1 px-2 py-2 md:block md:h-auto md:flex-grow md:px-4 md:py-0 md:space-y-1">
+        <nav className="grid h-full grid-cols-5 gap-1 px-2 py-2 md:block md:h-auto md:flex-grow md:px-4 md:py-0 md:space-y-1">
           <NavItem
             href="/dashboard/admin"
             icon="dashboard"
@@ -105,6 +106,12 @@ export default function AdminDashboardLayout({
             icon="location_on"
             label="Kelola Lokasi"
             isActive={pathname === "/dashboard/admin/tempat"}
+          />
+          <NavItem
+            href="/dashboard/admin/mahasiswa"
+            icon="groups"
+            label="Mahasiswa"
+            isActive={pathname === "/dashboard/admin/mahasiswa"}
           />
           <NavItem
             href="/dashboard/admin/tambah-tempat"

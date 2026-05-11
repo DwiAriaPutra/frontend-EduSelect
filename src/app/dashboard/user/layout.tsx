@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { io } from "socket.io-client";
 
 interface User {
   id: number;
@@ -42,6 +43,19 @@ export default function UserDashboardLayout({
       setLoading(false);
     }
   }, [router]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const socket = io(`${process.env.NEXT_PUBLIC_API_URL}`, {
+      auth: { token },
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");

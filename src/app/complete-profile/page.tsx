@@ -133,16 +133,25 @@ export default function CompleteProfilePage() {
                 <span className="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">
                   school
                 </span>
-                <input
-                  className="w-full pl-[48px] pr-md py-sm bg-surface-bright border border-outline-variant rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-sm text-body-sm text-on-surface"
+                <select
+                  className="w-full pl-[48px] pr-[48px] py-sm bg-surface-bright border border-outline-variant rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-sm text-body-sm text-on-surface appearance-none"
                   id="jurusan"
                   name="jurusan"
-                  placeholder="Contoh: Teknik Informatika"
-                  type="text"
                   value={jurusan}
                   onChange={(e) => setJurusan(e.target.value)}
                   required
-                />
+                >
+                  <option value="" disabled>
+                    Pilih Jurusan
+                  </option>
+                  <option value="Informatika">Informatika</option>
+                  <option value="Sistem Informasi">Sistem Informasi</option>
+                  <option value="Teknik Sipil">Teknik Sipil</option>
+                  <option value="Teknik Elektro">Teknik Elektro</option>
+                </select>
+                <span className="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-outline pointer-events-none">
+                  expand_more
+                </span>
               </div>
             </div>
 
