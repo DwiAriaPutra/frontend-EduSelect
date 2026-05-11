@@ -272,15 +272,18 @@ export default function UserDashboard() {
               </div>
               <div>
                 <h6 className="font-body-md font-bold mb-1">
-                  Pilih Lokasi Belajar
+                  Pilih Lokasi KKN
                 </h6>
                 <p className="text-sm text-on-surface-variant">
                   Pilih lokasi yang tersedia berdasarkan sisa kuota. Anda dapat
                   membandingkan fasilitas antar lokasi.
                 </p>
-                <button className="mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-container transition-colors">
+                <link
+                  href="/dashboard/user/pemilihan"
+                  className="mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-container transition-colors"
+                >
                   Pilih Sekarang
-                </button>
+                </link>
               </div>
             </div>
             <div className="flex gap-4">
@@ -374,12 +377,15 @@ export default function UserDashboard() {
             </div>
 
             <div className="mt-6 pt-4 border-t border-slate-100">
-              <button className="w-full py-2 bg-slate-50 text-slate-600 rounded-lg text-xs font-bold hover:bg-primary-fixed hover:text-primary transition-all flex items-center justify-center gap-2">
+              <link
+                href="/dashboard/notifikasi"
+                className="w-full py-2 bg-slate-50 text-slate-600 rounded-lg text-xs font-bold hover:bg-primary-fixed hover:text-primary transition-all flex items-center justify-center gap-2"
+              >
                 Lihat Semua Aktivitas
                 <span className="material-symbols-outlined text-sm">
                   arrow_forward
                 </span>
-              </button>
+              </link>
             </div>
           </div>
 
