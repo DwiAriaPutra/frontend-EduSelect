@@ -168,7 +168,7 @@ export default function AdminDashboardLayout({
           </div>
           <div className="flex items-center gap-2">
             <Link href="/dashboard/admin/notifikasi">
-              <TopBarButton icon="notifications" badge />
+              <TopBarButton icon="notifications" />
             </Link>
             <div className="hidden h-6 w-[1px] bg-outline-variant mx-2 sm:block"></div>
             <div className="hidden sm:block">

@@ -97,35 +97,41 @@ export default function UserDashboardLayout({
         <div className="hidden p-6 mb-2 md:block">
           <div className="flex items-center gap-3 px-2">
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-on-primary shadow-lg shadow-primary/20">
-              <span className="material-symbols-outlined font-bold">school</span>
+              <span className="material-symbols-outlined font-bold">
+                school
+              </span>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-primary tracking-tight">EduSelect</h1>
-              <p className="text-[10px] text-outline font-bold uppercase tracking-[0.15em]">Portal Mahasiswa</p>
+              <h1 className="text-lg font-bold text-primary tracking-tight">
+                EduSelect
+              </h1>
+              <p className="text-[10px] text-outline font-bold uppercase tracking-[0.15em]">
+                Portal Mahasiswa
+              </p>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
         <nav className="grid h-full grid-cols-3 gap-1 px-2 py-2 md:block md:h-auto md:flex-grow md:px-4 md:py-0 md:space-y-1">
-          <NavItem 
-            href="/dashboard/user" 
-            icon="dashboard" 
-            label="Dashboard" 
-            isActive={pathname === "/dashboard/user"} 
+          <NavItem
+            href="/dashboard/user"
+            icon="dashboard"
+            label="Dashboard"
+            isActive={pathname === "/dashboard/user"}
           />
-          <NavItem 
-            href="/dashboard/user/pemilihan" 
-            icon="location_on" 
-            label="Pilih Lokasi" 
-            isActive={pathname === "/dashboard/user/pemilihan"} 
+          <NavItem
+            href="/dashboard/user/pemilihan"
+            icon="location_on"
+            label="Pilih Lokasi"
+            isActive={pathname === "/dashboard/user/pemilihan"}
           />
           <div className="hidden my-4 mx-2 border-t border-outline-variant opacity-50 md:block"></div>
-          <NavItem 
-            href="/dashboard/user/profil" 
-            icon="person" 
-            label="Profil Saya" 
-            isActive={pathname === "/dashboard/user/profil"} 
+          <NavItem
+            href="/dashboard/user/profil"
+            icon="person"
+            label="Profil Saya"
+            isActive={pathname === "/dashboard/user/profil"}
           />
         </nav>
 
@@ -137,7 +143,9 @@ export default function UserDashboardLayout({
                 {getInitials(user?.nama || "")}
               </div>
               <div className="overflow-hidden">
-                <p className="text-xs font-bold text-on-surface truncate">{user?.nama}</p>
+                <p className="text-xs font-bold text-on-surface truncate">
+                  {user?.nama}
+                </p>
                 <p className="text-[10px] text-outline truncate">{user?.nim}</p>
               </div>
             </div>
@@ -145,7 +153,9 @@ export default function UserDashboardLayout({
               onClick={handleLogout}
               className="w-full flex items-center justify-center gap-2 rounded-xl border border-error/20 bg-error/10 py-2.5 text-xs font-bold text-error transition-all duration-200 hover:bg-error/20 active:scale-95"
             >
-              <span className="material-symbols-outlined text-[18px]">logout</span>
+              <span className="material-symbols-outlined text-[18px]">
+                logout
+              </span>
               Keluar Akun
             </button>
           </div>
@@ -157,11 +167,13 @@ export default function UserDashboardLayout({
         {/* TopAppBar Shell */}
         <header className="sticky top-0 right-0 min-h-16 flex justify-between items-center gap-4 px-4 py-3 z-40 bg-white/80 backdrop-blur-md border-b border-outline-variant md:h-16 md:px-8 md:py-0">
           <div className="min-w-0">
-            <h2 className="truncate text-base font-bold text-on-surface tracking-tight md:text-lg">{getTitle()}</h2>
+            <h2 className="truncate text-base font-bold text-on-surface tracking-tight md:text-lg">
+              {getTitle()}
+            </h2>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/dashboard/user/notifikasi">
-              <TopBarButton icon="notifications" badge />
+              <TopBarButton icon="notifications" />
             </Link>
             <div className="hidden h-6 w-[1px] bg-outline-variant mx-2 sm:block"></div>
             <div className="hidden sm:block">
@@ -181,15 +193,23 @@ export default function UserDashboardLayout({
         </header>
 
         {/* Content Area */}
-        <div className="flex-grow">
-          {children}
-        </div>
+        <div className="flex-grow">{children}</div>
       </main>
     </div>
   );
 }
 
-function NavItem({ href, icon, label, isActive }: { href: string; icon: string; label: string; isActive: boolean }) {
+function NavItem({
+  href,
+  icon,
+  label,
+  isActive,
+}: {
+  href: string;
+  icon: string;
+  label: string;
+  isActive: boolean;
+}) {
   return (
     <Link
       href={href}
@@ -200,13 +220,17 @@ function NavItem({ href, icon, label, isActive }: { href: string; icon: string; 
       }`}
     >
       <span
-        className={`material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform ${isActive ? "fill-1" : ""}`}
+        className={`material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform ${
+          isActive ? "fill-1" : ""
+        }`}
         style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
       >
         {icon}
       </span>
       <span>{label}</span>
-      {isActive && <div className="hidden ml-auto w-1.5 h-1.5 rounded-full bg-on-primary md:block"></div>}
+      {isActive && (
+        <div className="hidden ml-auto w-1.5 h-1.5 rounded-full bg-on-primary md:block"></div>
+      )}
     </Link>
   );
 }
