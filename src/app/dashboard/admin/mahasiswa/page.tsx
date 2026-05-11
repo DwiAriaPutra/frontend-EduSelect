@@ -106,19 +106,24 @@ export default function AdminStudentsPage() {
   }
 
   return (
-    <div className="px-4 py-6 pb-10 sm:px-6 md:px-8 md:py-8 md:pb-12">
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <div className="px-3 py-5 pb-28 sm:px-6 md:px-8 md:py-8 md:pb-12">
+      <div className="mb-5 flex flex-col gap-4 md:mb-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="min-w-0">
-          <h2 className="text-2xl font-bold text-on-surface mb-1">
+          <h2 className="text-xl font-bold text-on-surface mb-1 sm:text-2xl">
             Daftar Mahasiswa
           </h2>
-          <p className="text-outline font-medium">
+          <p className="text-sm font-medium text-outline sm:text-base">
             Pantau data mahasiswa terdaftar beserta status aktifnya.
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 sm:w-[420px]">
-          <SummaryCard label="Total" value={summary.total} icon="groups" />
+        <div className="grid grid-cols-2 gap-2 sm:w-[420px] sm:grid-cols-3 sm:gap-3">
+          <SummaryCard
+            label="Total"
+            value={summary.total}
+            icon="groups"
+            className="col-span-2 sm:col-span-1"
+          />
           <SummaryCard
             label="Online"
             value={summary.online}
@@ -141,7 +146,7 @@ export default function AdminStudentsPage() {
       )}
 
       {students.length === 0 ? (
-        <div className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-10 text-center shadow-sm">
+        <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-6 text-center shadow-sm sm:p-10">
           <span className="material-symbols-outlined mb-3 text-5xl text-outline">
             group_off
           </span>
@@ -203,26 +208,34 @@ export default function AdminStudentsPage() {
             {students.map((student) => (
               <div
                 key={student.id}
-                className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4 shadow-sm"
+                className="rounded-xl border border-outline-variant bg-surface-container-lowest p-4 shadow-sm"
               >
-                <div className="mb-4 flex items-start justify-between gap-3">
+                <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex min-w-0 items-center gap-3">
                     <Avatar name={student.nama} />
                     <div className="min-w-0">
-                      <h3 className="truncate font-bold text-on-surface">
+                      <h3 className="break-words text-base font-bold leading-snug text-on-surface">
                         {student.nama}
                       </h3>
-                      <p className="text-sm font-medium text-outline">
+                      <p className="mt-0.5 break-words text-sm font-medium text-outline">
                         {student.nim || "-"}
                       </p>
                     </div>
                   </div>
-                  <StatusBadge isOnline={student.is_online} />
+                  <div className="flex sm:justify-end">
+                    <StatusBadge isOnline={student.is_online} />
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <InfoBlock label="Jurusan" value={student.jurusan || "Belum diisi"} />
-                  <InfoBlock label="Gender" value={getGenderLabel(student.gender)} />
+                <div className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+                  <InfoBlock
+                    label="Jurusan"
+                    value={student.jurusan || "Belum diisi"}
+                  />
+                  <InfoBlock
+                    label="Gender"
+                    value={getGenderLabel(student.gender)}
+                  />
                 </div>
               </div>
             ))}
@@ -238,11 +251,13 @@ function SummaryCard({
   value,
   icon,
   tone = "default",
+  className = "",
 }: {
   label: string;
   value: number;
   icon: string;
   tone?: "default" | "online" | "offline";
+  className?: string;
 }) {
   const toneClass =
     tone === "online"
@@ -252,12 +267,18 @@ function SummaryCard({
       : "text-primary bg-primary/10";
 
   return (
-    <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-3 shadow-sm">
-      <div className={`mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg ${toneClass}`}>
+    <div
+      className={`rounded-xl border border-outline-variant bg-surface-container-lowest p-3 shadow-sm ${className}`}
+    >
+      <div
+        className={`mb-2 inline-flex h-8 w-8 items-center justify-center rounded-lg ${toneClass}`}
+      >
         <span className="material-symbols-outlined text-[18px]">{icon}</span>
       </div>
-      <p className="text-xl font-black text-on-surface">{value}</p>
-      <p className="text-[11px] font-bold uppercase tracking-wide text-outline">
+      <p className="text-lg font-black leading-none text-on-surface sm:text-xl">
+        {value}
+      </p>
+      <p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-outline sm:text-[11px]">
         {label}
       </p>
     </div>
@@ -283,7 +304,7 @@ function Avatar({ name }: { name: string }) {
 function StatusBadge({ isOnline }: { isOnline: boolean }) {
   return (
     <span
-      className={`inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-1 text-xs font-bold ${
+      className={`inline-flex shrink-0 items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold ${
         isOnline
           ? "bg-green-100 text-green-700"
           : "bg-slate-100 text-slate-600"
@@ -301,7 +322,7 @@ function StatusBadge({ isOnline }: { isOnline: boolean }) {
 
 function InfoBlock({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-surface-container p-3">
+    <div className="min-w-0 rounded-xl bg-surface-container p-3">
       <p className="mb-1 text-[11px] font-bold uppercase tracking-wide text-outline">
         {label}
       </p>
