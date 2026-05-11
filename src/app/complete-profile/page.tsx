@@ -6,10 +6,28 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
+const DEFAULT_JURUSAN = [
+  "Teknik Informatika",
+  "Sistem Informasi",
+  "Teknik Sipil",
+  "Teknik Elektro",
+];
+
+interface StoredUser {
+  id: number;
+  nim?: string | null;
+  nama: string;
+  role: string;
+  gender?: string | null;
+  jurusan?: string | null;
+}
+
 export default function CompleteProfilePage() {
   const [nim, setNim] = useState("");
   const [gender, setGender] = useState("");
   const [jurusan, setJurusan] = useState("");
+  const [jurusanOptions, setJurusanOptions] = useState(DEFAULT_JURUSAN);
+  const [storedUser, setStoredUser] = useState<StoredUser | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -24,8 +42,13 @@ export default function CompleteProfilePage() {
 
     try {
       const user = JSON.parse(userJson);
-      // If profile is already complete, redirect to dashboard
-      if (user.nim && user.gender && user.jurusan) {
+      setStoredUser(user);
+      setNim(user.nim || "");
+      setGender(user.gender || "");
+      setJurusan(user.jurusan || "");
+
+      // Google users only need gender; NIM and jurusan are mapped by the backend.
+      if (user.gender) {
         if (user.role === "admin") {
           router.push("/dashboard/admin");
         } else {
@@ -36,6 +59,34 @@ export default function CompleteProfilePage() {
       router.push("/login");
     }
   }, [router]);
+
+  useEffect(() => {
+    const fetchJurusan = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/jurusan`,
+          token
+            ? {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            : undefined
+        );
+        const jurusanData = response.data?.jurusan;
+        const options = Array.isArray(jurusanData)
+          ? jurusanData
+          : Object.values(jurusanData || {});
+
+        if (options.length > 0) {
+          setJurusanOptions(options as string[]);
+        }
+      } catch (err) {
+        console.error("Error fetching jurusan:", err);
+      }
+    };
+
+    fetchJurusan();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,6 +123,11 @@ export default function CompleteProfilePage() {
     }
   };
 
+  const showNimField = !storedUser?.nim;
+  const showJurusanField = !storedUser?.jurusan;
+  const isSubmitDisabled =
+    loading || !gender || (showNimField && !nim) || (showJurusanField && !jurusan);
+
   return (
     <div className="bg-background text-on-background min-h-screen flex flex-col">
       <div className="w-full max-w-7xl mx-auto px-lg md:px-xxl pt-lg">
@@ -96,64 +152,67 @@ export default function CompleteProfilePage() {
           </div>
 
           <form className="space-y-lg" onSubmit={handleSubmit}>
-            {/* NIM */}
-            <div className="space-y-unit">
-              <label
-                className="font-label-md text-label-md text-on-surface-variant block ml-xs"
-                htmlFor="nim"
-              >
-                NIM
-              </label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">
-                  badge
-                </span>
-                <input
-                  className="w-full pl-[48px] pr-md py-sm bg-surface-bright border border-outline-variant rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-sm text-body-sm text-on-surface"
-                  id="nim"
-                  name="nim"
-                  placeholder="Masukkan NIM Anda"
-                  type="text"
-                  value={nim}
-                  onChange={(e) => setNim(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Jurusan */}
-            <div className="space-y-unit">
-              <label
-                className="font-label-md text-label-md text-on-surface-variant block ml-xs"
-                htmlFor="jurusan"
-              >
-                Jurusan
-              </label>
-              <div className="relative">
-                <span className="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">
-                  school
-                </span>
-                <select
-                  className="w-full pl-[48px] pr-[48px] py-sm bg-surface-bright border border-outline-variant rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-sm text-body-sm text-on-surface appearance-none"
-                  id="jurusan"
-                  name="jurusan"
-                  value={jurusan}
-                  onChange={(e) => setJurusan(e.target.value)}
-                  required
+            {showNimField && (
+              <div className="space-y-unit">
+                <label
+                  className="font-label-md text-label-md text-on-surface-variant block ml-xs"
+                  htmlFor="nim"
                 >
-                  <option value="" disabled>
-                    Pilih Jurusan
-                  </option>
-                  <option value="Informatika">Informatika</option>
-                  <option value="Sistem Informasi">Sistem Informasi</option>
-                  <option value="Teknik Sipil">Teknik Sipil</option>
-                  <option value="Teknik Elektro">Teknik Elektro</option>
-                </select>
-                <span className="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-outline pointer-events-none">
-                  expand_more
-                </span>
+                  NIM
+                </label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">
+                    badge
+                  </span>
+                  <input
+                    className="w-full pl-[48px] pr-md py-sm bg-surface-bright border border-outline-variant rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-sm text-body-sm text-on-surface"
+                    id="nim"
+                    name="nim"
+                    placeholder="Masukkan NIM Anda"
+                    type="text"
+                    value={nim}
+                    onChange={(e) => setNim(e.target.value)}
+                    required
+                  />
+                </div>
               </div>
-            </div>
+            )}
+
+            {showJurusanField && (
+              <div className="space-y-unit">
+                <label
+                  className="font-label-md text-label-md text-on-surface-variant block ml-xs"
+                  htmlFor="jurusan"
+                >
+                  Jurusan
+                </label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline text-[20px]">
+                    school
+                  </span>
+                  <select
+                    className="w-full pl-[48px] pr-[48px] py-sm bg-surface-bright border border-outline-variant rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-sm text-body-sm text-on-surface appearance-none"
+                    id="jurusan"
+                    name="jurusan"
+                    value={jurusan}
+                    onChange={(e) => setJurusan(e.target.value)}
+                    required
+                  >
+                    <option value="" disabled>
+                      Pilih Jurusan
+                    </option>
+                    {jurusanOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-outline pointer-events-none">
+                    expand_more
+                  </span>
+                </div>
+              </div>
+            )}
 
             {/* Gender */}
             <div className="space-y-unit">
@@ -192,7 +251,7 @@ export default function CompleteProfilePage() {
               <button
                 className="w-full bg-primary text-white py-md rounded-lg font-title-lg text-title-lg hover:bg-primary/90 active:scale-[0.98] transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 type="submit"
-                disabled={loading || !nim || !gender || !jurusan}
+                disabled={isSubmitDisabled}
               >
                 {loading ? "Menyimpan..." : "Simpan dan Lanjutkan"}
               </button>

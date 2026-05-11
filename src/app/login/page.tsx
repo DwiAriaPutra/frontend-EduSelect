@@ -40,9 +40,9 @@ function LoginContent() {
       const user = response.data;
       localStorage.setItem("user", JSON.stringify(user));
 
-      // Check if profile is complete (for user role)
-      if (user.role === "user" && (!user.nim || !user.gender || !user.jurusan)) {
-        toast.success(`Selamat datang, ${user.nama}! Silakan lengkapi profil Anda.`);
+      // Google users already receive NIM and jurusan from the backend.
+      if (user.role === "user" && !user.gender) {
+        toast.success(`Selamat datang, ${user.nama}! Silakan lengkapi gender Anda.`);
         router.push("/complete-profile");
         return;
       }
@@ -85,9 +85,9 @@ function LoginContent() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      // Check if profile is complete (for user role)
-      if (user.role === "user" && (!user.nim || !user.gender || !user.jurusan)) {
-        toast.success(`Selamat datang kembali, ${user.nama}! Silakan lengkapi profil Anda.`);
+      // Google users only need to complete gender after the backend maps NIM and jurusan.
+      if (user.role === "user" && !user.gender) {
+        toast.success(`Selamat datang kembali, ${user.nama}! Silakan lengkapi gender Anda.`);
         router.push("/complete-profile");
         return;
       }
