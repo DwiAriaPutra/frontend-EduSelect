@@ -270,17 +270,25 @@ export default function UserDashboard() {
               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-surface-container-highest text-on-surface flex items-center justify-center text-xs font-bold">
                 2
               </div>
-              <div>
+              <div className="min-w-0">
                 <h6 className="font-body-md font-bold mb-1">
-                  Pilih Lokasi Belajar
+                  Pilih Lokasi KKN
                 </h6>
                 <p className="text-sm text-on-surface-variant">
                   Pilih lokasi yang tersedia berdasarkan sisa kuota. Anda dapat
                   membandingkan fasilitas antar lokasi.
                 </p>
-                <button className="mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-container transition-colors">
-                  Pilih Sekarang
-                </button>
+                <div className="mt-4 flex">
+                  <Link
+                    href="/dashboard/user/pemilihan"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-primary-container sm:w-auto"
+                  >
+                    Pilih Sekarang
+                    <span className="material-symbols-outlined text-[18px]">
+                      arrow_forward
+                    </span>
+                  </Link>
+                </div>
               </div>
             </div>
             <div className="flex gap-4">
@@ -374,12 +382,15 @@ export default function UserDashboard() {
             </div>
 
             <div className="mt-6 pt-4 border-t border-slate-100">
-              <button className="w-full py-2 bg-slate-50 text-slate-600 rounded-lg text-xs font-bold hover:bg-primary-fixed hover:text-primary transition-all flex items-center justify-center gap-2">
+              <Link
+                href="/dashboard/user/notifikasi"
+                className="w-full py-2 bg-slate-50 text-slate-600 rounded-lg text-xs font-bold hover:bg-primary-fixed hover:text-primary transition-all flex items-center justify-center gap-2"
+              >
                 Lihat Semua Aktivitas
                 <span className="material-symbols-outlined text-sm">
                   arrow_forward
                 </span>
-              </button>
+              </Link>
             </div>
           </div>
 

@@ -192,9 +192,6 @@ export default function UserProfile() {
               <h3 className="text-lg font-bold text-on-surface">
                 Detail Mahasiswa
               </h3>
-              <span className="text-[10px] text-slate-400 italic">
-                Terakhir diperbarui: 12 Jan 2024
-              </span>
             </div>
             <div className="p-5 grid grid-cols-1 gap-y-6 gap-x-8 md:grid-cols-2 sm:p-6">
               <div>

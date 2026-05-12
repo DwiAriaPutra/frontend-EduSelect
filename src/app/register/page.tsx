@@ -1,20 +1,50 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+
+const DEFAULT_JURUSAN = [
+  "Teknik Informatika",
+  "Sistem Informasi",
+  "Teknik Sipil",
+  "Teknik Elektro",
+];
 
 export default function RegisterPage() {
   const [nama, setNama] = useState("");
   const [nim, setNim] = useState("");
   const [jurusan, setJurusan] = useState("");
+  const [jurusanOptions, setJurusanOptions] = useState(DEFAULT_JURUSAN);
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchJurusan = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/jurusan`
+        );
+        const jurusanData = response.data?.jurusan;
+        const options = Array.isArray(jurusanData)
+          ? jurusanData
+          : Object.values(jurusanData || {});
+
+        if (options.length > 0) {
+          setJurusanOptions(options as string[]);
+        }
+      } catch (err) {
+        console.error("Error fetching jurusan:", err);
+      }
+    };
+
+    fetchJurusan();
+  }, []);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -162,10 +192,11 @@ export default function RegisterPage() {
                     <option value="" disabled>
                       Pilih Jurusan
                     </option>
-                    <option value="Informatika">Informatika</option>
-                    <option value="Sistem Informasi">Sistem Informasi</option>
-                    <option value="Teknik Sipil">Teknik Sipil</option>
-                    <option value="Teknik Elektro">Teknik Elektro</option>
+                    {jurusanOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
                   </select>
                   <span className="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 text-outline pointer-events-none">
                     expand_more
