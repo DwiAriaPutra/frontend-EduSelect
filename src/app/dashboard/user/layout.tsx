@@ -44,9 +44,11 @@ export default function UserDashboardLayout({
   }, [router]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    router.push("/login");
+    localStorage.clear();
+
+    setUser(null);
+    router.replace("/login");
+    router.refresh();
   };
 
   const getInitials = (name: string) => {
